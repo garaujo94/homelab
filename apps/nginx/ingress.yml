@@ -14,7 +14,7 @@ spec:
   #       - eniac
   #     secretName: eniac-tls
   rules:
-    - host: eniac
+    - host: eniac.100.64.229.114.sslip.io
       http:
         paths:
           - path: /
