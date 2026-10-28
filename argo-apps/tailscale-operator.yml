@@ -11,7 +11,8 @@ spec:
     targetRevision: 1.76.x # Ajuste para a versão mais recente desejada
     helm:
       values: |
-        operatorSecret: "tailscale-operator-auth"
+        oauth:
+          existingSecret: "operator-oauth"
   destination:
     server: https://kubernetes.default.svc
     namespace: tailscale
