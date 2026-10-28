@@ -2,19 +2,15 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: m-nginx
-  annotations:
-    kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
-    traefik.ingress.kubernetes.io/service.serversscheme: http
-    # cert-manager.io/cluster-issuer: selfsigned-issuer
+
 spec:
-  ingressClassName: traefik
-  # tls:
-  #   - hosts:
-  #       - eniac
-  #     secretName: eniac-tls
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - ng
+      secretName: eniac-tls
   rules:
-    - host: eniac
+    - host: ng
       http:
         paths:
           - path: /
