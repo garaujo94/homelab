@@ -5,15 +5,22 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+    traefik.ingress.kubernetes.io/service.serversscheme: http
+    cert-manager.io/cluster-issuer: selfsigned-issuer
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - eniac
+      secretName: eniac-tls
   rules:
-    http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: m-nginx
-              port:
-                number: 80
+    - host: eniac
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: m-nginx
+                port:
+                  number: 80
