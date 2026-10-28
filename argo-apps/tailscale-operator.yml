@@ -11,7 +11,6 @@ spec:
     targetRevision: 1.76.x # Ajuste para a versão mais recente desejada
     helm:
       values: |
-        # Avisa ao operador para usar o secret com a nossa api_key
         operatorSecret: "tailscale-operator-auth"
   destination:
     server: https://kubernetes.default.svc
