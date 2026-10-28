@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: m-nginx
+spec:
+  type: ClusterIP
+  selector:
+    app: m-nginx
+  ports:
+    - port: 80
+      targetPort: 80
