@@ -6,13 +6,13 @@ metadata:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
     traefik.ingress.kubernetes.io/service.serversscheme: http
-    cert-manager.io/cluster-issuer: selfsigned-issuer
+    # cert-manager.io/cluster-issuer: selfsigned-issuer
 spec:
   ingressClassName: traefik
-  tls:
-    - hosts:
-        - eniac
-      secretName: eniac-tls
+  # tls:
+  #   - hosts:
+  #       - eniac
+  #     secretName: eniac-tls
   rules:
     - host: eniac
       http:
