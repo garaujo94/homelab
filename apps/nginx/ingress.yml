@@ -5,10 +5,6 @@ metadata:
 
 spec:
   ingressClassName: traefik
-  tls:
-    - hosts:
-        - eniac.k3s.eniac.tailb0d602.ts.net
-      secretName: eniac-tls
   rules:
     - host: eniac.k3s.eniac.tailb0d602.ts.net
       http:
