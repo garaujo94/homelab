@@ -7,10 +7,10 @@ spec:
   ingressClassName: tailscale
   tls:
     - hosts:
-        - eniac
+        - eniac.k3s.eniac.tailb0d602.ts.net
       secretName: eniac-tls
   rules:
-    - host: eniac
+    - host: eniac.k3s.eniac.tailb0d602.ts.net
       http:
         paths:
           - path: /
