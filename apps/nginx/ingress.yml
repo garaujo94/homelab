@@ -19,4 +19,4 @@ spec:
               service:
                 name: m-nginx
                 port:
-                  number: 82
+                  number: 80
