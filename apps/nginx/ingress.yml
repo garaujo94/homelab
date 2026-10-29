@@ -4,7 +4,7 @@ metadata:
   name: m-nginx
 
 spec:
-  ingressClassName: tailscale
+  ingressClassName: traefik
   tls:
     - hosts:
         - eniac.k3s.eniac.tailb0d602.ts.net
