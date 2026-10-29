@@ -7,10 +7,10 @@ spec:
   ingressClassName: tailscale
   tls:
     - hosts:
-        - ng
+        - eniac
       secretName: eniac-tls
   rules:
-    - host: ng
+    - host: eniac
       http:
         paths:
           - path: /
