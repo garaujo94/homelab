@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: m-nginx
+  name: traefik
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: "https://github.com/garaujo94/homelab"
     targetRevision: HEAD
-    path: apps/nginx
+    path: apps/traefik
   destination:
     server: "https://kubernetes.default.svc"
     namespace: default
