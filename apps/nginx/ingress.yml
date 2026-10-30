@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: eniac.k3s.eniac.tailb0d602.ts.net
+    - host: eniac.tailb0d602.ts.net
       http:
         paths:
           - path: /
