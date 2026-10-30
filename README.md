@@ -18,6 +18,7 @@ out-of-business/            # configs aposentadas, não sincronizadas por nada
 |---|---|
 | https://m-nginx.tailb0d602.ts.net | nginx de teste (`apps/nginx`) |
 | https://argocd.tailb0d602.ts.net | ArgoCD UI/CLI |
+| https://argo.tailb0d602.ts.net | Argo Workflows UI (L3/TCP, cert self-signed do argo-server — aceite o aviso) |
 | http://eniac.tailb0d602.ts.net | Traefik do k3s no node `eniac` (sem app, retorna 404) |
 
 Cada app tem seu próprio device na tailnet, criado pelo Tailscale operator — não existe subdomínio dentro de `eniac.tailb0d602.ts.net` (MagicDNS só resolve `<device>.tailb0d602.ts.net`).
@@ -79,5 +80,7 @@ Senha do admin: `kubectl -n argocd get secret argocd-initial-admin-secret -o jso
 
 - **`server.insecure=true` é obrigatório** no `argocd-cmd-params-cm`: o Ingress do operator só fala HTTP com o backend, então sem isso o ArgoCD responde `307 → https` e o proxy volta pra porta 80 (loop). Esse patch é drift manual — o ArgoCD não se gerencia por aqui.
 - **CRDs grandes** (operator Tailscale ~460 KB) exigem `ServerSideApply=true` no Application, senão o sync falha no limite de 256 KB do apply client-side.
+- **Argo Workflows**: o `quick-start-minimal.yaml` do release tem 12 MB, acima do limite default de 10 MB do repo-server (`exceeded max combined manifest file size`). O bootstrap já seta `reposerver.max.combined.directory.manifests.size: "30M"` no `argocd-cmd-params-cm`.
+- O `argo-server` roda com TLS em 2746 e o Ingress do operator só fala HTTP com o backend, por isso o Argo Workflows é exposto por Service **L3** (`loadBalancerClass: tailscale`), não por Ingress.
 - O nginx monta um único `index.html` via ConfigMap; servir em subpath daria 404 porque o prefixo não é removido. Por isso `path: /`.
 - `argocd-server` está como `LoadBalancer`/`<pending>` (sobra do acesso antigo por NodePort); a entrada real é o Ingress da tailnet.

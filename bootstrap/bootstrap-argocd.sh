@@ -33,11 +33,13 @@ kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f - >/
 kubectl apply -n argocd --server-side --force-conflicts -f "https://raw.githubusercontent.com/argoproj/argo-cd/${ARGOCD_VERSION}/manifests/install.yaml"
 
 # server.insecure: o argocd-server serve HTTP em 8080 e o proxy da tailnet faz o TLS
+# manifest.size: quick-start do argo-workflows tem 12MB (default do repo-server é 10M)
 kubectl -n argocd patch cm argocd-cmd-params-cm --type merge \
-  -p "{\"data\":{\"server.insecure\":\"${INSECURE}\"}}"
+  -p "{\"data\":{\"server.insecure\":\"${INSECURE}\",\"reposerver.max.combined.directory.manifests.size\":\"30M\"}}"
 
-kubectl -n argocd rollout restart deploy/argocd-server
+kubectl -n argocd rollout restart deploy/argocd-server deploy/argocd-repo-server
 kubectl -n argocd rollout status deploy/argocd-server --timeout=600s
+kubectl -n argocd rollout status deploy/argocd-repo-server --timeout=600s
 kubectl -n argocd wait --for=condition=available deployment --all --timeout=600s
 
 echo "==> root-app (app of apps)"
