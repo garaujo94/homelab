@@ -1,13 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: m-nginx
-
+  name: m-nginx-tailscale
 spec:
-  ingressClassName: traefik
+  ingressClassName: tailscale
+  # o primeiro label de tls.hosts vira o device MagicDNS -> m-nginx.tailb0d602.ts.net
+  tls:
+    - hosts:
+        - m-nginx
   rules:
-    - host: eniac.tailb0d602.ts.net
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
