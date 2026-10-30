@@ -8,9 +8,7 @@ spec:
   source:
     repoURL: "https://github.com/argoproj/argo-workflows"
     targetRevision: v4.1.6
-    path: manifests
-    directory:
-      include: quick-start-minimal.yaml # mesmo conteúdo do apply do release
+    path: manifests/cluster-install # kustomize: o cap de 10MB do repo-server só vale para source tipo directory
   destination:
     server: "https://kubernetes.default.svc"
     namespace: argo
