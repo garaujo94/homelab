@@ -9,7 +9,7 @@ spec:
     - host: eniac.tailb0d602.ts.net
       http:
         paths:
-          - path: /
+          - path: /ng
             pathType: Prefix
             backend:
               service:
