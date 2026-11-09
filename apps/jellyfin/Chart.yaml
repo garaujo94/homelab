@@ -1,0 +1,12 @@
+apiVersion: v2
+name: jellyfin
+description: Wrapper chart do Jellyfin (upstream jellyfin-helm)
+type: application
+version: 0.1.0
+
+# dependency = chart upstream que este wrapper instala.
+# a versão fica pinada: "latest" não é semver válido e quebra o `helm dependency build`.
+dependencies:
+  - name: jellyfin
+    version: 3.7.0
+    repository: https://jellyfin.github.io/jellyfin-helm

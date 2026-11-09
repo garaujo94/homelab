@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jellyfin-tailscale
+spec:
+  ingressClassName: tailscale
+  # primeiro label de tls.hosts vira o device -> jellyfin.tailb0d602.ts.net
+  tls:
+    - hosts:
+        - jellyfin
+  # sem rules[].host: o roteamento do operator é catch-all
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin # fullname do subchart (release = nome do Application)
+                port:
+                  number: 8096 # service.port do chart upstream

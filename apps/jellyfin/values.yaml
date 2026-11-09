@@ -1,4 +1,5 @@
-# values.yaml
+# Valores do subchart. Tudo abaixo de `jellyfin:` é passado para a dependency
+# de mesmo nome; o resto é do wrapper (nenhum valor próprio por enquanto).
 jellyfin:
   replicaCount: 1
 
@@ -15,14 +16,10 @@ jellyfin:
       size: 100Gi
       storageClass: ""
 
+  # O Ingress do wrapper (templates/ingress-tailscale.yaml) usa o padrão
+  # tailscale do repo, então o Ingress do chart fica desligado.
   ingress:
-    enabled: true
-    className: "traefik"
-    hosts:
-      - host: jellyfin.example.com
-        paths:
-          - path: /
-            pathType: Prefix
+    enabled: false
 
   resources:
     limits:
