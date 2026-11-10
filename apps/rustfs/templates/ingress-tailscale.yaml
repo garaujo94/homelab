@@ -1,0 +1,41 @@
+# Dois devices na tailnet: console no 9001 e API S3 no 9000.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rustfs-console-tailscale
+spec:
+  ingressClassName: tailscale
+  # primeiro label de tls.hosts vira o device -> rustfs.tailb0d602.ts.net
+  tls:
+    - hosts:
+        - rustfs
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rustfs-svc # fullname do subchart (release = nome do Application)
+                port:
+                  number: 9001 # console
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rustfs-s3-tailscale
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - rustfs-s3 # -> rustfs-s3.tailb0d602.ts.net
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rustfs-svc
+                port:
+                  number: 9000 # S3 API

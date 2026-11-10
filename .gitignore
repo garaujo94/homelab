@@ -1,0 +1,3 @@
+# dependencies dos wrapper charts são baixadas pelo ArgoCD (helm dependency build)
+apps/*/charts/
+keys.yml

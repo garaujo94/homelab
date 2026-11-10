@@ -1,0 +1,12 @@
+apiVersion: v2
+name: rustfs
+description: Wrapper chart do RustFS (upstream rustfs/rustfs)
+type: application
+version: 0.1.0
+
+# dependency = chart upstream que este wrapper instala.
+# a versão fica pinada: o ArgoCD roda `helm dependency build` no sync.
+dependencies:
+  - name: rustfs
+    version: 1.0.4
+    repository: https://charts.rustfs.com

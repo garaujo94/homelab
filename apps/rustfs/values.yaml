@@ -1,0 +1,39 @@
+# Valores do subchart. Tudo abaixo de `rustfs:` é passado para a dependency
+# de mesmo nome; o resto é do wrapper (nenhum valor próprio por enquanto).
+rustfs:
+  # k3s de um node só: standalone = 1 Deployment + PVCs. O modo distributed
+  # (default do chart) exige >= 2 pods e tem anti-affinity obrigatória por
+  # hostname, então não agenda em um node.
+  mode:
+    standalone:
+      enabled: true
+    distributed:
+      enabled: false
+  replicaCount: 1
+
+  image:
+    rustfs:
+      pullPolicy: IfNotPresent
+
+  # Credenciais fora do git: o chart exige existingSecret (ou chaves literais)
+  # e falha no render se nada for passado. Ver README.
+  secret:
+    existingSecret: rustfs-credentials
+
+  storageclass:
+    name: local-path
+    dataStorageSize: 10Gi
+    logStorageSize: 1Gi
+
+  # O Ingress do wrapper (templates/ingress-tailscale.yaml) usa o padrão
+  # tailscale do repo, então o Ingress do chart fica desligado.
+  ingress:
+    enabled: false
+
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi

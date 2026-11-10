@@ -18,6 +18,8 @@ out-of-business/            # configs aposentadas, não sincronizadas por nada
 |---|---|
 | https://m-nginx.tailb0d602.ts.net | nginx de teste (`apps/nginx`) |
 | https://argocd.tailb0d602.ts.net | ArgoCD UI/CLI |
+| https://rustfs.tailb0d602.ts.net | console web do RustFS |
+| https://rustfs-s3.tailb0d602.ts.net | API S3 do RustFS |
 | https://argo.tailb0d602.ts.net | Argo Workflows UI (L3/TCP, cert self-signed do argo-server — aceite o aviso) |
 | http://eniac.tailb0d602.ts.net | Traefik do k3s no node `eniac` (sem app, retorna 404) |
 
@@ -75,6 +77,21 @@ export TS_OAUTH_CLIENT_ID=... TS_OAUTH_CLIENT_SECRET=...
 O script cria o secret `operator-oauth`, instala o ArgoCD `v3.5.6` (`--server-side`), aplica `server.insecure=true`, espera os deployments e aplica o `root-app` — que traz operator, nginx, cert-manager e o Ingress do ArgoCD.
 
 Senha do admin: `kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d`
+
+## RustFS
+
+`apps/rustfs` é wrapper do chart oficial (`charts.rustfs.com`, versão pinada no `Chart.yaml`) em modo **standalone** no namespace `rustfs`: o modo distributed (default do chart) exige ≥ 2 nodes e anti-affinity por hostname, então não agenda em um k3s de um node.
+
+A credencial não fica no git. Crie o secret **antes** do primeiro sync (o chart exige `existingSecret` e falha no render sem chaves):
+
+```bash
+kubectl create namespace rustfs --dry-run=client -o yaml | kubectl apply -f -
+kubectl -n rustfs create secret generic rustfs-credentials \
+  --from-literal=RUSTFS_ACCESS_KEY=... \
+  --from-literal=RUSTFS_SECRET_KEY=...
+```
+
+Sem ele o pod fica em `CreateContainerConfigError`.
 
 ## Gotchas
 
