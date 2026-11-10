@@ -1,0 +1,29 @@
+# Service do argocd-server declarado aqui para o ArgoCD ser dono do `type`.
+# Motivo: com type=LoadBalancer o k3s (servicelb/klipper-lb) cria um DaemonSet
+# `svclb-argocd-server` cujo pod usa hostPort 80/443 — e o `svclb-traefik` já
+# ocupa essas portas na única node, então um dos dois fica Pending para sempre.
+# A entrada real do ArgoCD é o Ingress da tailnet (apps/argocd/ingress.yml),
+# que aponta para esta Service na porta 80.
+# Resto da spec = igual ao manifests/install.yaml do ArgoCD v3.5.6.
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/part-of: argocd
+  name: argocd-server
+  namespace: argocd
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: argocd-server
